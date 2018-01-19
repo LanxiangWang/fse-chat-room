@@ -7,5 +7,23 @@
 <body>
   <h1>Hello, welcom to FSE Chat Room!</h1>
 
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+  <script>
+    // when call io(), we make a request from client to the server to open up a web socket and keep that connection open
+    var socket = io();
+
+    // first param: event name
+    // second param: callback
+    // connect is a built-in event
+    socket.on('connect', () => {
+      console.log('Connect to server');
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Disconnect from server');
+    });
+
+  </script>
+
 </body>
 </html>
