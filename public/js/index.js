@@ -24,6 +24,12 @@ socket.on('disconnect', function() {
 // listener for newMessage
 socket.on('newMessage', function(data) {
   console.log(data);
+  var li = jQuery('<li></li>');
+  // var li = '<li>' + data.from + ': ' + data.text;
+
+  li.text(`${data.from}: ${data.text}`);
+
+  jQuery('#messages').append(li);
 });
 
 // emitter for createMessage
@@ -31,5 +37,25 @@ socket.on('newMessage', function(data) {
 //   text: "What'up, this is from client."
 // });
 
+// the 3rd param is a callback function to realize acknowledgement
+// socket.emit('createMessage', {
+//   from: 'Kobe',
+//   text: 'hi'
+// }, function(data) {
+//   console.log('Got it');
+//   console.log(data);
+// });
+
+jQuery('#message-form').on('submit', function(e) {
+  e.preventDefault();
+
+  socket.emit('createMessage', {
+    from: 'User',
+    // jQuery('[]') select property, in this case, any element including name="message" property will be selected
+    text: jQuery('[name=message]').val()
+  }, function() {
+
+  });
+})
 
 

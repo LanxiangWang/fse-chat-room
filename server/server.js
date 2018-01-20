@@ -33,7 +33,9 @@ io.on('connection', (socket) => {
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'A new user join in FSE Chat Room!'));
 
   // listener for createMessage
-  socket.on('createMessage', (data) => {
+  // 2nd param is the data emitted from client
+  // 3rd param is the acknowledge (callback function) emitted from client
+  socket.on('createMessage', (data, callback) => {
     console.log(data);
 
     // io.emit() will emit message to all sockets instead of the only socket in this io.on() method
@@ -43,7 +45,8 @@ io.on('connection', (socket) => {
       from: data.from,
       text: data.text,
       createAt: new Date().getTime()
-    })
+    });
+    callback('This is from server');
 
     // socket.broadcast.emit() is similar to io.emit() but it will not send message to this socket
     // socket.broadcast.emit('newMessage', {
