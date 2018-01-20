@@ -26,15 +26,24 @@ io.on('connection', (socket) => {
 
 
   // emitter for newMessage
-  socket.emit('newMessage', {
-    text: 'Hey, there. This is from server.',
-    from: 'Lanxiang',
-    createAt: new Date().toString()
-  });
+  // socket.emit('newMessage', {
+  //   text: 'Hey, there. This is from server.',
+  //   from: 'Lanxiang',
+  //   createAt: new Date().toString()
+  // });
 
   // listener for createMessage
   socket.on('createMessage', (data) => {
     console.log(data);
+
+    // io.emit() will emit message to all sockets instead of the only socket in this io.on() method
+    // the second param in the io.on() method is the individual client that send request to server
+    io.emit('newMessage', {
+      note: 'This is from io.emit.',
+      from: data.from,
+      text: data.text,
+      createAt: new Date().getTime()
+    })
   })
 
   socket.on('disconnect', () => {

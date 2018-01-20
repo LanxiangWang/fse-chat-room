@@ -7,10 +7,10 @@ var socket = io();
 socket.on('connect', function() {
   console.log('Connect to server');
 
-  socket.emit('createMessage', {
-    text: "What'up, this is from client.",
-    from: "Lanxiang"
-  });
+  // socket.emit('createMessage', {
+  //   text: "What'up, this is from client.",
+  //   from: "Lanxiang"
+  // });
   
 
 });
