@@ -7,6 +7,9 @@ const publicPath = path.join(__dirname, '../public');
 const express = require('express');
 const socketIO = require('socket.io');
 
+// self-defined module
+const {generateMessage} = require('./utils/message');
+
 // setup for heroku
 const port = process.env.PORT || 3000;
 
@@ -25,15 +28,9 @@ io.on('connection', (socket) => {
   console.log('New user connected');
 
   // greeting to the new user
-  socket.emit('newMessage', {
-    from: 'Admin',
-    text: 'Welcome to FSE Chat Room!'
-  });
+  socket.emit('newMessage', generateMessage('Admin', 'Welcome to FSE Chat Room!'));
 
-  socket.broadcast.emit('newMessage', {
-    from: 'Admin',
-    text: 'A new user joined FSE Chat Room.'
-  });
+  socket.broadcast.emit('newMessage', generateMessage('Admin', 'A new user join in FSE Chat Room!'));
 
   // listener for createMessage
   socket.on('createMessage', (data) => {
