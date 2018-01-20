@@ -19,6 +19,14 @@ socket.on('disconnect', function() {
   console.log('Disconnect from server');
 });
 
+socket.on('newLocation', function(position) {
+  var li = jQuery('<li></li>');
+  var a = jQuery('<a target="_blank">My current location</a>');
+  li.text(`${position.from}: `);
+  a.attr('href', position.url);
+  li.append(a);
+  jQuery('#messages').append(li);
+})
 // the parameter in the callback function is the data emitted from server
 
 // listener for newMessage
@@ -56,6 +64,23 @@ jQuery('#message-form').on('submit', function(e) {
   }, function() {
 
   });
-})
+});
+
+var locationButton = jQuery('#send-location');
+locationButton.on('click', function() {
+  if (!navigator.geolocation) {
+    return alert('Geolocation not supported by your browser.');
+  }
+
+  navigator.geolocation.getCurrentPosition(function(position) {
+    console.log(position);
+    socket.emit('createLocation', {
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude
+    });
+  }, function(error) {  
+    alert('Unable to fetch location.');
+  });
+});
 
 

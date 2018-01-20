@@ -8,7 +8,7 @@ const express = require('express');
 const socketIO = require('socket.io');
 
 // self-defined module
-const {generateMessage} = require('./utils/message');
+const {generateMessage, generateLocationMessage} = require('./utils/message');
 
 // setup for heroku
 const port = process.env.PORT || 3000;
@@ -59,6 +59,10 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('User disconnected from server.');
   });
+
+  socket.on('createLocation', (coords) => {
+    io.emit('newLocation', generateLocationMessage('Admin', coords.latitude, coords.longitude));
+  })
 
   // socket.emit('newEmail', {
   //   from: 'Mike@example.com',
