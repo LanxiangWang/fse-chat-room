@@ -20,6 +20,10 @@ socket.on('disconnect', function() {
 });
 
 socket.on('newLocation', function(position) {
+  var li = jQuery('<li id="time-center"></li>');
+  li.text(position.createAt);
+  jQuery('#messages').append(li);
+
   var li = jQuery('<li></li>');
   var a = jQuery('<a target="_blank">My current location</a>');
   li.text(`${position.from}: `);
@@ -32,6 +36,10 @@ socket.on('newLocation', function(position) {
 // listener for newMessage
 socket.on('newMessage', function(data) {
   console.log(data);
+  var li = jQuery('<li id="time-center"></li>');
+  li.text(data.createAt);
+  jQuery('#messages').append(li);
+
   var li = jQuery('<li></li>');
   // var li = '<li>' + data.from + ': ' + data.text;
 

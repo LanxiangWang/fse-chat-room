@@ -40,12 +40,7 @@ io.on('connection', (socket) => {
 
     // io.emit() will emit message to all sockets instead of the only socket in this io.on() method
     // the second param in the io.on() method is the individual client that send request to server
-    io.emit('newMessage', {
-      note: 'This is from io.emit.',
-      from: data.from,
-      text: data.text,
-      createAt: new Date().getTime()
-    });
+    io.emit('newMessage', generateMessage(data.from, data.text));
     callback();
 
     // socket.broadcast.emit() is similar to io.emit() but it will not send message to this socket

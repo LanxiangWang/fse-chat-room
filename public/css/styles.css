@@ -172,6 +172,15 @@ button:disabled {
   color: #999;
 }
 
+#time-center {
+  width: 100px;
+  margin: 0 auto;
+  border: 2px solid #dcdcdc;
+  border-radius: 25px;
+  background-color: #dcdcdc;
+  text-align: center;
+}
+
 @media (max-width: 600px) {
   * {
     font-size: 1rem;
