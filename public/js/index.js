@@ -62,7 +62,7 @@ jQuery('#message-form').on('submit', function(e) {
     // jQuery('[]') select property, in this case, any element including name="message" property will be selected
     text: jQuery('[name=message]').val()
   }, function() {
-
+    jQuery('[name=message]').val('');
   });
 });
 
@@ -71,14 +71,18 @@ locationButton.on('click', function() {
   if (!navigator.geolocation) {
     return alert('Geolocation not supported by your browser.');
   }
-
+  jQuery('#send-location').attr('disabled', 'disabled').text('Sending location...');
   navigator.geolocation.getCurrentPosition(function(position) {
     console.log(position);
+
     socket.emit('createLocation', {
       latitude: position.coords.latitude,
       longitude: position.coords.longitude
+    }, function() {
+      jQuery('#send-location').removeAttr('disabled').text('Send location');
     });
   }, function(error) {  
+    jQuery('#send-location').removeAttr('disabled').text('Send location');
     alert('Unable to fetch location.');
   });
 });

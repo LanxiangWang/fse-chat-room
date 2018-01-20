@@ -46,7 +46,7 @@ io.on('connection', (socket) => {
       text: data.text,
       createAt: new Date().getTime()
     });
-    callback('This is from server');
+    callback();
 
     // socket.broadcast.emit() is similar to io.emit() but it will not send message to this socket
     // socket.broadcast.emit('newMessage', {
@@ -60,8 +60,9 @@ io.on('connection', (socket) => {
     console.log('User disconnected from server.');
   });
 
-  socket.on('createLocation', (coords) => {
+  socket.on('createLocation', (coords, callback) => {
     io.emit('newLocation', generateLocationMessage('Admin', coords.latitude, coords.longitude));
+    callback();
   })
 
   // socket.emit('newEmail', {
