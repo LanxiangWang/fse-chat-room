@@ -24,13 +24,16 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
   console.log('New user connected');
 
+  // greeting to the new user
+  socket.emit('newMessage', {
+    from: 'Admin',
+    text: 'Welcome to FSE Chat Room!'
+  });
 
-  // emitter for newMessage
-  // socket.emit('newMessage', {
-  //   text: 'Hey, there. This is from server.',
-  //   from: 'Lanxiang',
-  //   createAt: new Date().toString()
-  // });
+  socket.broadcast.emit('newMessage', {
+    from: 'Admin',
+    text: 'A new user joined FSE Chat Room.'
+  });
 
   // listener for createMessage
   socket.on('createMessage', (data) => {
@@ -44,6 +47,13 @@ io.on('connection', (socket) => {
       text: data.text,
       createAt: new Date().getTime()
     })
+
+    // socket.broadcast.emit() is similar to io.emit() but it will not send message to this socket
+    // socket.broadcast.emit('newMessage', {
+    //   from: data.from,
+    //   text: data.text,
+    //   createAt: new Date().getTime()
+    // });
   })
 
   socket.on('disconnect', () => {
