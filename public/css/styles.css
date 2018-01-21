@@ -159,6 +159,7 @@ button:disabled {
 }
 
 .message__title {
+  font-weight: bold;
   display: flex;
   margin-bottom: 5px;
 }

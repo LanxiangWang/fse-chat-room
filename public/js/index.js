@@ -20,32 +20,47 @@ socket.on('disconnect', function() {
 });
 
 socket.on('newLocation', function(position) {
-  var li = jQuery('<li id="time-center"></li>');
-  li.text(position.createAt);
-  jQuery('#messages').append(li);
+  var template = jQuery('#location-template').html();
+  var html = Mustache.render(template, {
+    createAt: position.createAt,
+    from: position.from,
+    url: position.url
+  });
+  jQuery('#messages').append(html);
+  // var li = jQuery('<li id="time-center"></li>');
+  // li.text(position.createAt);
+  // jQuery('#messages').append(li);
 
-  var li = jQuery('<li></li>');
-  var a = jQuery('<a target="_blank">My current location</a>');
-  li.text(`${position.from}: `);
-  a.attr('href', position.url);
-  li.append(a);
-  jQuery('#messages').append(li);
+  // var li = jQuery('<li></li>');
+  // var a = jQuery('<a target="_blank">My current location</a>');
+  // li.text(`${position.from}: `);
+  // a.attr('href', position.url);
+  // li.append(a);
+  // jQuery('#messages').append(li);
 })
 // the parameter in the callback function is the data emitted from server
 
 // listener for newMessage
 socket.on('newMessage', function(data) {
-  console.log(data);
-  var li = jQuery('<li id="time-center"></li>');
-  li.text(data.createAt);
-  jQuery('#messages').append(li);
+  var template = jQuery('#message-template').html();
+  var html = Mustache.render(template, {
+    createAt: data.createAt,
+    from: data.from,
+    text: data.text
+  });
+  jQuery('#messages').append(html);
 
-  var li = jQuery('<li></li>');
-  // var li = '<li>' + data.from + ': ' + data.text;
+  // console.log(data);
+  // var li = jQuery('<li id="time-center"></li>');
+  // li.text(data.createAt);
+  // jQuery('#messages').append(li);
 
-  li.text(`${data.from}: ${data.text}`);
+  // var li = jQuery('<li></li>');
+  // // var li = '<li>' + data.from + ': ' + data.text;
 
-  jQuery('#messages').append(li);
+  // li.text(`${data.from}: ${data.text}`);
+
+  // jQuery('#messages').append(li);
 });
 
 // emitter for createMessage

@@ -23,12 +23,22 @@
       </form>
       <button id="send-location">Send location</button>
     </div>
-
   </div>
+
+  <script id="message-template" type="text/template">
+    <li id="time-center">{{createAt}}</li>
+    <div class="message__title">{{from}}: </div>{{text}}
+  </script>
+
+  <script type="text/template" id="location-template">
+    <li id="time-center">{{createAt}}</li>
+    <div class="message__title">{{from}}: </div><a target="_blank" href={{url}}>My current location</a>
+  </script>
 
 
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="/js/libs/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/js/libs/mustache.js"></script>
   <script src="/js/index.js"></script>
 
 </body>
