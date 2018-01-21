@@ -1,6 +1,29 @@
 // when call io(), we make a request from client to the server to open up a web socket and keep that connection open
 var socket = io();
 
+function scrollToBottom() {
+  // selectors
+  var messages = jQuery('#messages');
+  var newMessage = messages.children("li:last-child");
+  // heights
+  var clientHeight = messages.prop('clientHeight');
+  var scrollTop = messages.prop('scrollTop');
+  var scrollHeight = messages.prop('scrollHeight');
+  var newMessageHeight = newMessage.innerHeight();
+  var lastMessageHeight = newMessage.prev().innerHeight();
+
+  console.log('clientHeight: ', clientHeight);
+  console.log('scrollTop: ', scrollTop);
+  console.log('scrollHeight: ', scrollHeight);
+  console.log(newMessage);
+  console.log('newMessageHeight: ', newMessageHeight);
+  console.log('lastMessageHeight: ', lastMessageHeight);
+
+  if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+    messages.scrollTop(scrollHeight);
+  }
+}
+
 // first param: event name
 // second param: callback
 // connect is a built-in event
@@ -27,6 +50,7 @@ socket.on('newLocation', function(position) {
     url: position.url
   });
   jQuery('#messages').append(html);
+  scrollToBottom();
   // var li = jQuery('<li id="time-center"></li>');
   // li.text(position.createAt);
   // jQuery('#messages').append(li);
@@ -49,6 +73,7 @@ socket.on('newMessage', function(data) {
     text: data.text
   });
   jQuery('#messages').append(html);
+  scrollToBottom();
 
   // console.log(data);
   // var li = jQuery('<li id="time-center"></li>');
