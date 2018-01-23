@@ -2,10 +2,13 @@
 const path = require('path');
 const http = require('http');
 const publicPath = path.join(__dirname, '../public');
+const {mongoose} = require('./db/mongoose');
+const {Users} = require('./models/user');
 
 // third-party module
 const express = require('express');
 const socketIO = require('socket.io');
+const hbs = require('hbs');
 
 // self-defined module
 const {generateMessage, generateLocationMessage} = require('./utils/message');
@@ -13,10 +16,14 @@ const {generateMessage, generateLocationMessage} = require('./utils/message');
 // setup for heroku
 const port = process.env.PORT || 3000;
 
-// setup
+// setup for server and socket.io
 var app = express();
 var server = http.createServer(app);
 var io = socketIO(server);
+
+// setup view engine
+app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, '/views'));
 
 // serve static resources
 // middleware
@@ -70,6 +77,14 @@ io.on('connection', (socket) => {
   //   console.log(data);
   // })
 });
+
+app.get('/', (req, res) => {
+  res.render('index.hbs');
+});
+
+app.get('/signup', (req, res) => {
+  res.render('signup.hbs');
+})
 
 
 
