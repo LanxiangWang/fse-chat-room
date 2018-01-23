@@ -23,7 +23,6 @@
 
     $('.validate-form').on('submit',function(){
         var check = true;
-        alert('login');
         for(var i=0; i<input.length; i++) {
             if(validate(input[i]) == false){
                 showValidate(input[i]);
@@ -36,23 +35,27 @@
 
     $('.validate-form-signup').on('submit',function(){
         var check = true;
-        // for(var i=0; i<input.length; i++) {
-        //     if(validate(input[i]) == false){
-        //         showValidate(input[i]);
-        //         check=false;
-        //     }
-        // }
-        alert(input[0].var());
-        if ($(input[1]).var() !== $(input[2]).var()) {
-            
+        
+        for(var i=0; i<input.length; i++) {
+            if(validate(input[i]) == false){
+                showValidate(input[i]);
+                check=false;
+            }
+        }
+        
+               
+        if ($(input[1]).val() !== $(input[2]).val()) {
+            // alert($(input[2]).val());
             showValidate(input[2]);
             check = false;
         }
-        return check;
+        
+        return false;
+
     });
 
 
-    $('.validate-form .input100').each(function(){
+    $('.input100').each(function(){
         $(this).focus(function(){
            hideValidate(this);
         });
