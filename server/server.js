@@ -13,7 +13,6 @@ const express = require('express');
 const socketIO = require('socket.io');
 const hbs = require('hbs');
 const bodyParser = require('body-parser');
-const session = require('express-session');
 const moment = require('moment');
 
 // self-defined module
@@ -39,12 +38,6 @@ var userMap = new Map();
 app.use(express.static(publicPath));
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(bodyParser.json());
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
-}));
 
 // io.on register an event listener, when this event happens, server can do something
 // connection is a default event
@@ -175,7 +168,6 @@ app.post('/', (req, res) => {
 
     res.redirect(`/chat.html?user=${user.nikeName}`);
     
-    console.log(req.session.user);
   }).catch(() => {
     res.redirect('/?loginError=Incorrect email or password.');
   });
