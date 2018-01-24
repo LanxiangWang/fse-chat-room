@@ -187,7 +187,10 @@ button:disabled {
 }
 
 .background {
-  background-image: url("https://www.planwallpaper.com/static/images/Alien_Ink_2560X1600_Abstract_Background_1.jpg");
+  background-image: url("/img/paper-1230085_1920.jpg");
+  background-size: 1050px 800px;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 @media (max-width: 600px) {
