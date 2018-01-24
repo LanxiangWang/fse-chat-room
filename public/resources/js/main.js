@@ -44,13 +44,18 @@
         }
         
                
-        if ($(input[1]).val() !== $(input[2]).val()) {
+        if ($(input[2]).val() !== $(input[3]).val()) {
             // alert($(input[2]).val());
-            showValidate(input[2]);
+            showValidate(input[3]);
+            check = false;
+        }
+
+        if ($(input[2]).val().length < 6) {
+            showValidatePass(input[2]);
             check = false;
         }
         
-        return false;
+        return check;
 
     });
 
@@ -84,6 +89,18 @@
         var thisAlert = $(input).parent();
 
         $(thisAlert).removeClass('alert-validate');
+    }
+
+    function showValidatePass(input) {
+        var thisAlert = $(input).parent();
+
+        $(thisAlert).addClass('alert-validate-pass-length');
+    }
+
+    function hideValidatePass(input) {
+        var thisAlert = $(input).parent();
+
+        $(thisAlert).removeClass('alert-validate-pass-length');
     }
     
     /*==================================================================

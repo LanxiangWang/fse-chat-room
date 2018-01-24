@@ -3,27 +3,80 @@
 <head>
   <meta charset="utf-8">
   <title>FSE Chat Room</title>
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 
-<body class="chat">
+<body class="background">
 
-  <div class="chat__sidebar">
-    <h3>People</h3>
-    <div id="users"></div>
-  </div>
-
-  <div class="chat__main">
-    <ol id="messages" class="chat__messages"></ol>
-    
-    <div class="chat__footer">
-      <form id="message-form">
-        <input name="message" type="text" placeholder="Message" autofocus autocomplete="off" />
-        <button>Send</button>
-      </form>
-      <button id="send-location">Send location</button>
+<!--   <div class="container">
+  <div class="row">
+    <div class="col-sm">
+      One of three columns
+    </div>
+    <div class="col-sm">
+      One of three columns
+    </div>
+    <div class="col-sm">
+      One of three columns
     </div>
   </div>
+</div> -->
+
+<div class="container">
+  <img class="rounded mx-auto d-block" src="https://www.freshbooks.com/assets/img/addons/livechat.png">
+
+
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-2">
+      <div class="center-card">
+      <div class="card text-white bg-info mb-3" style="max-width: 25rem;">
+        <div class="card-header">People Online:</div>
+        <div class="card-body">
+          <p id="users" class="card-text text-center"></p>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="col-sm-8">
+
+      <div class="chat">
+        <div class="chat__sidebar">
+          <h3>People</h3>
+          <div id="users">0</div>
+        </div>
+
+        <div class="chat__main">
+          <ol id="messages" class="chat__messages"></ol>
+          
+          <div class="chat__footer">
+            <form id="message-form">
+              <input name="message" type="text" placeholder="Message" autofocus autocomplete="off" />
+              <button>Send</button>
+            </form>
+            <button id="send-location">Send location</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="col-sm-2">
+      <figure class="figure center-card">
+        <a href="/logout">
+          <img src="http://www.iconsplace.com/icons/preview/red/shutdown-256.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+        </a>
+      </figure>
+    </div>
+
+  </div>
+</div>
+
 
   <script id="message-template" type="text/template">
     <li>
@@ -41,7 +94,9 @@
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="/js/libs/jquery-3.2.1.min.js"></script>
   <script type="text/javascript" src="/js/libs/mustache.js"></script>
+  <script type="text/javascript" src="/js/deparam.js"></script>
   <script src="/js/index.js"></script>
+
 
 </body>
 </html>

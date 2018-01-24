@@ -28,18 +28,15 @@ function scrollToBottom() {
 // second param: callback
 // connect is a built-in event
 socket.on('connect', function() {
-  console.log('Connect to server');
+  socket.emit('join', (jQuery.deparam(window.location.search).user));
+});
 
-  // socket.emit('createMessage', {
-  //   text: "What'up, this is from client.",
-  //   from: "Lanxiang"
-  // });
-  
-
+socket.on('updatePeople', (num) => {
+  jQuery('#users').html(num);
 });
 
 socket.on('disconnect', function() {
-  console.log('Disconnect from server');
+  socket.emit('leave', (jQuery.deparam(window.location.search).user));
 });
 
 socket.on('newLocation', function(position) {
@@ -104,9 +101,8 @@ socket.on('newMessage', function(data) {
 
 jQuery('#message-form').on('submit', function(e) {
   e.preventDefault();
-
   socket.emit('createMessage', {
-    from: 'User',
+    from: jQuery.deparam(window.location.search).user,
     // jQuery('[]') select property, in this case, any element including name="message" property will be selected
     text: jQuery('[name=message]').val()
   }, function() {

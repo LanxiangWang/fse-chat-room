@@ -13,10 +13,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.2",
     "express": "^4.16.2",
+    "express-session": "^1.15.6",
     "hbs": "^4.0.1",
     "moment": "^2.20.1",
-    "mongoose": "^5.0.1",
+    "mongodb": "^2.2.5",
+    "mongoose": "^4.5.9",
     "socket.io": "^2.0.4",
     "validator": "^9.2.0"
   },

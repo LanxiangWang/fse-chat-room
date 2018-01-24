@@ -1,4 +1,6 @@
 // built-in module
+
+
 const path = require('path');
 const http = require('http');
 const publicPath = path.join(__dirname, '../public');
@@ -9,6 +11,8 @@ const {Users} = require('./models/user');
 const express = require('express');
 const socketIO = require('socket.io');
 const hbs = require('hbs');
+const bodyParser = require('body-parser');
+const session = require('express-session');
 
 // self-defined module
 const {generateMessage, generateLocationMessage} = require('./utils/message');
@@ -25,19 +29,28 @@ var io = socketIO(server);
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, '/views'));
 
+var onlineNum = 0;
+var userMap = new Map();
+
 // serve static resources
 // middleware
 app.use(express.static(publicPath));
+app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(bodyParser.json());
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
 
-// io.on register an event listener, when this even happens, server can do something
+// io.on register an event listener, when this event happens, server can do something
 // connection is a default event
 io.on('connection', (socket) => {
-  console.log('New user connected');
-
   // greeting to the new user
   socket.emit('newMessage', generateMessage('Admin', 'Welcome to FSE Chat Room!'));
 
-  socket.broadcast.emit('newMessage', generateMessage('Admin', 'A new user join in FSE Chat Room!'));
+  
 
   // listener for createMessage
   // 2nd param is the data emitted from client
@@ -58,8 +71,21 @@ io.on('connection', (socket) => {
     // });
   })
 
+  socket.on('join', (user) => {
+    userMap.set(socket.id, user);
+    console.log(userMap.get(socket.id));
+    socket.broadcast.emit('newMessage', generateMessage('Admin', `${user} join in FSE Chat Room!`));
+    onlineNum++;
+    io.emit('updatePeople', onlineNum);
+  });
+
+
   socket.on('disconnect', () => {
-    console.log('User disconnected from server.');
+    var user = userMap.get(socket.id);
+    socket.broadcast.emit('newMessage', generateMessage('Admin', `${user} has left.`));
+    onlineNum--;
+    io.emit('updatePeople', onlineNum);
+    console.log(`${user} disconnected from server.`);
   });
 
   socket.on('createLocation', (coords, callback) => {
@@ -84,7 +110,39 @@ app.get('/', (req, res) => {
 
 app.get('/signup', (req, res) => {
   res.render('signup.hbs');
-})
+});
+
+app.post('/signup', (req, res) => {
+  console.log(req.body.pass[0]);2
+  console.log(req.body.email);
+  var user = new Users({
+    email: req.body.email,
+    nikeName: req.body.nickname,
+    password: req.body.pass[0]
+  });
+  user.save().then(() => {
+    console.log('save successfully');
+    res.redirect(`/chat.html?user=${req.body.nickname}`);
+  }, (e) => {
+    console.log('cannot save', e);
+  });
+});
+
+app.post('/', (req, res) => {
+  var email = req.body.email;
+  var originalPassword = req.body.pass;
+  console.log(email, originalPassword);
+  Users.findByEmail(email, originalPassword).then((user) => {
+
+    res.redirect(`/chat.html?user=${user.nikeName}`);
+    
+    console.log(req.session.user);
+  }).catch(() => {
+
+  });
+});
+
+
 
 
 
