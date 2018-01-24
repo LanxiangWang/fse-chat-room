@@ -6,6 +6,7 @@ const http = require('http');
 const publicPath = path.join(__dirname, '../public');
 const {mongoose} = require('./db/mongoose');
 const {Users} = require('./models/user');
+const {messages} = require('./models/message');
 
 // third-party module
 const express = require('express');
@@ -13,6 +14,7 @@ const socketIO = require('socket.io');
 const hbs = require('hbs');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const moment = require('moment');
 
 // self-defined module
 const {generateMessage, generateLocationMessage} = require('./utils/message');
@@ -57,6 +59,19 @@ io.on('connection', (socket) => {
   // 3rd param is the acknowledge (callback function) emitted from client
   socket.on('createMessage', (data, callback) => {
     console.log(data);
+    var date = moment(new Date().getTime());
+
+    var histroyMessage = new messages({
+      text: data.text,
+      user: data.from,
+      createAt: date.format('h:mm a')
+    });
+
+    histroyMessage.save().then(() => {
+      console.log('save message successfully');
+    }, () => {
+      console.log('save message fail');
+    })
 
     // io.emit() will emit message to all sockets instead of the only socket in this io.on() method
     // the second param in the io.on() method is the individual client that send request to server
@@ -74,6 +89,15 @@ io.on('connection', (socket) => {
   socket.on('join', (user) => {
     userMap.set(socket.id, user);
     console.log(userMap.get(socket.id));
+
+    // load all histroy message
+    messages.find({}, (err, allMessages) => {
+      allMessages.map(eachMessage => {
+        socket.emit('newMessage', generateMessage(eachMessage.user, eachMessage.text, eachMessage.createAt));
+      })
+    })
+
+
     socket.broadcast.emit('newMessage', generateMessage('Admin', `${user} join in FSE Chat Room!`));
     onlineNum++;
     io.emit('updatePeople', onlineNum);
