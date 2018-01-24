@@ -105,12 +105,27 @@ io.on('connection', (socket) => {
 });
 
 app.get('/', (req, res) => {
+  console.log(req.query.message);
+  if (req.query.message) {
+    var logout_message = req.query.message;
+    console.log(logout_message);
+    return res.render('index.hbs', {logout_message, alert_class: 'alert alert-success'});
+  }
+
+  if (req.query.loginError) {
+    return res.render('index.hbs', {logout_message: req.query.loginError, alert_class: 'alert alert-danger'});
+  }
+  
   res.render('index.hbs');
 });
 
 app.get('/signup', (req, res) => {
   res.render('signup.hbs');
 });
+
+app.get('/logout', (req, res) => {
+  res.redirect('/?message=Logout successfully!');
+})
 
 app.post('/signup', (req, res) => {
   console.log(req.body.pass[0]);2
@@ -138,7 +153,7 @@ app.post('/', (req, res) => {
     
     console.log(req.session.user);
   }).catch(() => {
-
+    res.redirect('/?loginError=Incorrect email or password.');
   });
 });
 
