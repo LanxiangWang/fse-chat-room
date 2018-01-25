@@ -427,6 +427,11 @@ iframe {
   position: relative;
 }
 
+.alert-validate:hover:before {
+  visibility: visible;
+  opacity: 1;
+}
+
 .alert-validate::before {
   content: attr(data-validate);
   position: absolute;
@@ -475,6 +480,11 @@ iframe {
   -o-transform: translateY(-50%);
   transform: translateY(-50%);
   right: 5px;
+}
+
+.alert-validate:hover:before {
+  visibility: visible;
+  opacity: 1;
 }
 
 .alert-validate-pass-length:hover:before {

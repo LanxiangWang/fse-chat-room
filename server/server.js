@@ -43,7 +43,7 @@ app.use(bodyParser.json());
 // connection is a default event
 io.on('connection', (socket) => {
   // greeting to the new user
-  socket.emit('newMessage', generateMessage('Admin', 'Welcome to FSE Chat Room!'));
+  
 
   
 
@@ -87,9 +87,11 @@ io.on('connection', (socket) => {
     messages.find({}, (err, allMessages) => {
       allMessages.map(eachMessage => {
         socket.emit('newMessage', generateMessage(eachMessage.user, eachMessage.text, eachMessage.createAt));
-      })
-    })
+      });
+      socket.emit('newMessage', generateMessage('Admin', 'Welcome to FSE Chat Room!'));
+    });
 
+    
 
     socket.broadcast.emit('newMessage', generateMessage('Admin', `${user} join in FSE Chat Room!`));
     onlineNum++;
